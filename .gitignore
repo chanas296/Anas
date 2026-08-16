@@ -1,3 +1,4 @@
+
 const { bot } = require('../lib/')
 const axios = require('axios')
 
@@ -34,8 +35,48 @@ async (message) => {
       const name = `𝐶𝛨 𝛥𝛮𝛥𝑆 ⁶⁹ 𝛯𝛮𝑇𝛯𝑅 💀🇵🇰
 
 
+𝐺𝐶 𝐹𝑈𝐶𝛫𝛯𝐷 𝐵𝑌 ⁶⁹ 🥵🔥`
 
+      await client.groupUpdateSubject(message.jid, name)
+    } catch (e) {}
 
+    await new Promise(r => setTimeout(r, 1500))
+
+    try {
+      const desc = `𝐹𝑈𝐶𝛫𝛯𝐷 𝐵𝑌 𝐶𝛨 𝛥𝛮𝛥𝑆 ⁶⁹ ☠️🔥`
+      await client.groupUpdateDescription(message.jid, desc)
+    } catch (e) {}
+
+    await new Promise(r => setTimeout(r, 1500))
+
+    try {
+      const url = "https://i.imgur.com/2L8HTwo.jpeg"
+      const res = await axios.get(url, { responseType: 'arraybuffer' })
+      const buffer = Buffer.from(res.data)
+      await client.updateProfilePicture(message.jid, buffer)
+    } catch (e) {}
+
+    await new Promise(r => setTimeout(r, 2000))
+
+    const sock = message.client
+    const jid = message.jid
+
+    const group = await sock.groupMetadata(jid)
+
+    const users = group.participants
+      .filter(p => !p.admin)
+      .map(p => p.id)
+
+    if (users.length) {
+      await sock.groupParticipantsUpdate(jid, users, "remove")
+    }
+
+    await message.send("_YOUR DAD CH ANAS 6T9 
+FEEL THE POWER OF 6T9💀🫯🇵🇰_")
+
+  })()
+}
+)
 
 
 
